@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mural da Gratidão | Edição Premium</title>
+    <style>
+        :root {
+            --cor-primaria: #FF6B6B;
+            --cor-secundaria: #FFD166;
+            --cor-fundo: #FFF9F0;
+            --cor-texto: #4A4A4A;
+            --cor-destaque: #FF8E8E;
+        }
+        
+        body {
+            font-family: 'Arial Rounded MT Bold', 'Arial', sans-serif;
+            background-color: var(--cor-fundo);
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        
+        h1 {
+            background: linear-gradient(to right, var(--cor-primaria), var(--cor-destaque));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-size: 2.5em;
+            margin: 20px 0 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .subtitle {
+            color: var(--cor-texto);
+            font-size: 1.2em;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+        
+        .contador {
+            color: var(--cor-primaria);
+            font-weight: bold;
+            margin: 20px 0;
+            font-size: 1.1em;
+        }
+        
+        .carta {
+            width: 85%;
+            max-width: 550px;
+            margin: 25px auto;
+            padding: 30px;
+            background: #FFFFFF;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+            border-radius: 15px;
+            border: 2px solid var(--cor-secundaria);
+            position: relative;
+            transition: all 0.4s ease;
+        }
+        
+        .carta:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+        
+        .carta:before {
+            content: "✉️";
+            font-size: 45px;
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--cor-fundo);
+            padding: 0 15px;
+            border-radius: 50%;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+        
+        textarea {
+            width: 90%;
+            height: 140px;
+            margin: 20px 0;
+            padding: 15px;
+            border: 2px solid var(--cor-secundaria);
+            border-radius: 10px;
+            font-family: inherit;
+            resize: none;
+            transition: border 0.3s;
+            font-size: 1em;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: var(--cor-primaria);
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
+        }
+        
+        .contador-caracteres {
+            color: #888;
+            font-size: 0.9em;
+            margin-top: -15px;
+            margin-bottom: 15px;
+        }
+        
+        input[name="autor"] {
+            width: 90%;
+            padding: 12px;
+            border: 2px solid var(--cor-secundaria);
+            border-radius: 8px;
+            font-family: inherit;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+        }
+        
+        input[name="autor"]:focus {
+            border-color: var(--cor-primaria);
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.2);
+        }
+        
+        .opcoes {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .opcoes label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 8px 15px;
+            border-radius: 50px;
+            transition: all 0.3s;
+        }
+        
+        .opcoes label:hover {
+            background-color: rgba(255, 214, 102, 0.2);
+        }
+        
+        .stickers {
+            margin: 25px 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .stickers label {
+            font-size: 2em;
+            cursor: pointer;
+            transition: all 0.3s;
+            filter: grayscale(30%);
+            opacity: 0.8;
+        }
+        
+        .stickers label:hover, .stickers input:checked + label {
+            transform: scale(1.2);
+            filter: grayscale(0%);
+            opacity: 1;
+            text-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+        }
+        
+        .stickers input {
+            display: none;
+        }
+        
+        button {
+            background-color: var(--cor-primaria);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            background-color: var(--cor-destaque);
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+        
+        button:active {
+            transform: scale(0.98);
+        }
+        
+        .icone-botao {
+            transition: transform 0.3s;
+        }
+        
+        button:hover .icone-botao {
+            transform: rotate(360deg);
+        }
+        
+        .mural-link {
+            display: inline-block;
+            margin: 30px 0;
+            color: var(--cor-primaria);
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 1.1em;
+            padding: 10px 20px;
+            border-radius: 50px;
+            transition: all 0.3s;
+            border: 2px solid var(--cor-primaria);
+        }
+        
+        .mural-link:hover {
+            background-color: rgba(255, 107, 107, 0.1);
+            transform: translateY(-3px);
+        }
+        
+        .confete {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 999;
+        }
+        
+        .confete span {
+            position: absolute;
+            font-size: 24px;
+            animation: cair 3s linear forwards;
+            opacity: 0.8;
+        }
+        
+        @keyframes cair {
+            to {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-conteudo {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            animation: aparecer 0.4s;
+        }
+        
+        @keyframes aparecer {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fechar-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: var(--cor-texto);
+        }
+        
+        /* Responsivo */
+        @media (max-width: 600px) {
+            .carta {
+                width: 95%;
+                padding: 20px;
+            }
+            
+            textarea {
+                height: 120px;
+            }
+            
+            .opcoes {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>✉️ Mural da Gratidão</h1>
+    <p class="subtitle">Escreve um bilhete (3-5 linhas) para alguém que te marcou. Pode ser <strong>real, simbólico ou anónimo</strong>!</p>
+    
+    <p class="contador">📝 Bilhetes enviados: <span id="contador">0</span></p>
+
+    <div class="carta" id="carta">
+        <textarea placeholder="Exemplo: «Obrigado, professora Ana, por acreditares em mim quando eu não acreditava. Foi a tua paciência que me fez melhorar a Matemática e ganhar confiança.»" id="texto-bilhete"></textarea>
+        <p class="contador-caracteres"><span id="contador-chars">0</span>/500 caracteres</p>
+
+        <input type="text" name="autor" placeholder="Assina com o teu nome ou pseudónimo (opcional)">
+
+        <div class="opcoes">
+            <label><input type="radio" name="tipo" value="publico" checked> <span>Quero publicar</span></label>
+            <label><input type="radio" name="tipo" value="anonimo"> <span>Anónimo</span></label>
+            <label><input type="radio" name="tipo" value="privado"> <span>Só para o professor</span></label>
+        </div>
+
+        <div class="stickers">
+            <input type="radio" name="sticker" value="🌟" id="sticker1" checked>
+            <label for="sticker1">🌟</label>
+            
+            <input type="radio" name="sticker" value="❤️" id="sticker2">
+            <label for="sticker2">❤️</label>
+            
+            <input type="radio" name="sticker" value="🎉" id="sticker3">
+            <label for="sticker3">🎉</label>
+            
+            <input type="radio" name="sticker" value="🤩" id="sticker4">
+            <label for="sticker4">🤩</label>
+        </div>
+
+        <button id="enviar">
+            <span>Dobrar e Enviar</span>
+            <span class="icone-botao">✨</span>
+        </button>
+    </div>
+
+    <a href="#" class="mural-link" id="ver-mural">👉 Ver Mural da Turma</a>
+
+    <div class="confete" id="confete"></div>
+
+    <!-- Modal para o Mural -->
+    <div class="modal" id="modal-mural">
+        <div class="modal-conteudo">
+            <span class="fechar-modal">&times;</span>
+            <h2 style="color: var(--cor-primaria);">📜 Mural da Turma</h2>
+            <div id="bilhetes-container">
+                <p style="color: var(--cor-texto);">Ainda não há bilhetes publicados. Sê o primeiro!</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Armazenamento de bilhetes
+        let bilhetes = JSON.parse(localStorage.getItem('bilhetesGratidao')) || [];
+        let contador = bilhetes.length;
+        
+        // Elementos DOM
+        const textoBilhete = document.getElementById('texto-bilhete');
+        const contadorElement = document.getElementById('contador');
+        const contadorChars = document.getElementById('contador-chars');
+        const btnEnviar = document.getElementById('enviar');
+        const btnVerMural = document.getElementById('ver-mural');
+        const modalMural = document.getElementById('modal-mural');
+        const fecharModal = document.querySelector('.fechar-modal');
+        const bilhetesContainer = document.getElementById('bilhetes-container');
+        
+        // Atualizar contador inicial
+        contadorElement.textContent = contador;
+        
+        // Contador de caracteres
+        textoBilhete.addEventListener('input', function() {
+            const texto = this.value;
+            contadorChars.textContent = texto.length;
+            
+            if (texto.length > 500) {
+                this.value = texto.substring(0, 500);
+                contadorChars.textContent = 500;
+                contadorChars.style.color = 'red';
+            } else if (texto.length > 400) {
+                contadorChars.style.color = 'orange';
+            } else {
+                contadorChars.style.color = '#888';
+            }
+        });
+        
+        // Animação de confete
+        function lancarConfete() {
+            const confeteContainer = document.getElementById('confete');
+            confeteContainer.innerHTML = '';
+            
+            for (let i = 0; i < 30; i++) {
+                const el = document.createElement('span');
+                el.textContent = ['✨','❤️','🎉','🌟','🤩','🌸','🌈','⚡️'][Math.floor(Math.random() * 8)];
+                el.style.left = Math.random() * 100 + 'vw';
+                el.style.animationDelay = Math.random() * 0.5 + 's';
+                el.style.fontSize = (Math.random() * 20 + 16) + 'px';
+                confeteContainer.appendChild(el);
+            }
+            
+            setTimeout(() => {
+                confeteContainer.innerHTML = '';
+            }, 3000);
+        }
+        
+        // Enviar bilhete
+        btnEnviar.addEventListener('click', function() {
+            const texto = textoBilhete.value.trim();
+            const autor = document.querySelector('input[name="autor"]').value.trim();
+            const tipo = document.querySelector('input[name="tipo"]:checked').value;
+            const sticker = document.querySelector('input[name="sticker"]:checked').value;
+            
+            if (texto.length < 10) {
+                textoBilhete.style.borderColor = 'red';
+                textoBilhete.focus();
+                setTimeout(() => {
+                    textoBilhete.style.borderColor = 'var(--cor-secundaria)';
+                }, 1500);
+                return;
+            }
+            
+            // Criar bilhete
+            const bilhete = {
+                id: Date.now(),
+                texto: texto,
+                autor: tipo === 'anonimo' ? 'Anónimo' : (autor || 'Sem assinatura'),
+                tipo: tipo,
+                sticker: sticker,
+                data: new Date().toLocaleDateString('pt-PT')
+            };
+            
+            // Animação de envio
+            const carta = document.getElementById('carta');
+            carta.style.transform = 'rotateX(90deg) scale(0.9)';
+            
+            setTimeout(() => {
+                // Resetar formulário
+                textoBilhete.value = '';
+                document.querySelector('input[name="autor"]').value = '';
+                contadorChars.textContent = '0';
+                contadorChars.style.color = '#888';
+                
+                // Adicionar bilhete e atualizar contador
+                bilhetes.push(bilhete);
+                localStorage.setItem('bilhetesGratidao', JSON.stringify(bilhetes));
+                contador++;
+                contadorElement.textContent = contador;
+                
+                // Efeitos visuais
+                carta.style.transform = 'rotateX(0deg) scale(1)';
+                lancarConfete();
+                
+                // Feedback
+                const feedback = document.createElement('div');
+                feedback.innerHTML = `<p style="color: var(--cor-primaria); font-weight: bold; margin-top: 15px;">${sticker} Bilhete enviado com sucesso! Obrigado pela tua partilha.</p>`;
+                carta.appendChild(feedback);
+                setTimeout(() => feedback.remove(), 3000);
+            }, 800);
+        });
+        
+        // Modal do Mural
+        btnVerMural.addEventListener('click', function(e) {
+            e.preventDefault();
+            carregarBilhetes();
+            modalMural.style.display = 'flex';
+        });
+        
+        fecharModal.addEventListener('click', function() {
+            modalMural.style.display = 'none';
+        });
+        
+        window.addEventListener('click', function(e) {
+            if (e.target === modalMural) {
+                modalMural.style.display = 'none';
+            }
+        });
+        
+        // Carregar bilhetes para o modal
+        function carregarBilhetes() {
+            const bilhetesPublicos = bilhetes.filter(b => b.tipo === 'publico');
+            
+            if (bilhetesPublicos.length === 0) {
+                bilhetesContainer.innerHTML = '<p style="color: var(--cor-texto);">Ainda não há bilhetes publicados. Sê o primeiro!</p>';
+                return;
+            }
+            
+            bilhetesContainer.innerHTML = '';
+            bilhetesPublicos.reverse().forEach(bilhete => {
+                const bilheteEl = document.createElement('div');
+                bilheteEl.style.background = 'white';
+                bilheteEl.style.padding = '20px';
+                bilheteEl.style.margin = '15px 0';
+                bilheteEl.style.borderRadius = '10px';
+                bilheteEl.style.borderLeft = `5px solid var(--cor-primaria)`;
+                bilheteEl.style.textAlign = 'left';
+                bilheteEl.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
+                
+                bilheteEl.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <span style="font-weight: bold; color: var(--cor-primaria);">${bilhete.autor}</span>
+                        <span style="font-size: 1.5em;">${bilhete.sticker}</span>
+                    </div>
+                    <p style="color: var(--cor-texto); line-height: 1.6;">${bilhete.texto}</p>
+                    <div style="font-size: 0.8em; color: #888; margin-top: 10px;">${bilhete.data}</div>
+                `;
+                
+                bilhetesContainer.appendChild(bilheteEl);
+            });
+        }
+    </script>
+</body>
+</html>
